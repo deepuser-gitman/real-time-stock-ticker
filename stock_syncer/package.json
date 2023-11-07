@@ -1,0 +1,19 @@
+{
+  "name": "stock_syncer",
+  "version": "1.0.0",
+  "description": "Sync data from the stock API and send it to Apache Kafka.",
+  "main": "stock_publisher.js",
+  "scripts": {
+    "start": "node stock_publisher.js",
+    "unscubscribe": "node stock_unsubscribe.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "kafkajs": "^2.2.4",
+    "ws": "^8.14.2"
+  }
+}
