@@ -24,6 +24,20 @@ services:
       - './data/kafka/data:/bitnami/kafka/data'
       - './data/kafka/logs:/bitnami/kafka/logs'
 
+  mongodb:
+    image: 'bitnami/mongodb:7.0.3'
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGODB_USERNAME=${MONGODB_USERNAME:-mongo_user}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD:-mongo_pass}
+      - MONGODB_DATABASE=${MONGODB_DATABASE:-stock}
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD:-mongo_root_pass}
+    networks:
+      - app-network
+    volumes:
+      - './data/mongodb/data:/bitnami/mongodb/data'
+
   app_stock_syncer:
     build:
       context: ./stock_syncer
@@ -32,3 +46,13 @@ services:
       - app-network
     depends_on:
       - kafka
+
+  mongo_stock_syncer:
+    build:
+      context: ./sync_mongo
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    depends_on:
+      - kafka
+      - mongodb

@@ -5,7 +5,7 @@ import { Kafka } from 'kafkajs';
 dotenv.config();
 
 const kafka = new Kafka({
-    clientId: 'kafka-nodejs-starter',
+    clientId: 'kafka-stock',
     brokers: ['localhost:9094', 'kafka:9092'],
 });
 
@@ -25,18 +25,21 @@ const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.FINNHUB_AP
 
 // Connection opened -> Subscribe
 socket.addEventListener('open', function (event) {
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'AAPL' }))
+    // socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'AAPL' }))
     socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'BINANCE:BTCUSDT' }))
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'IC MARKETS:1' }))
+    // socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'IC MARKETS:1' }))
 });
 
 const send_message_to_kafka = async (event) => {
-    const message = event.data;
+    const message = JSON.parse(event.data);
     console.log('Message from server ', message);
 
+    if (message.type !== 'trade') {
+        return;
+    }
     await producer.send({
         topic: 'stock',
-        messages: [{ value: message }],
+        messages: [{ value: JSON.stringify(message) }],
     });
 };
 
