@@ -37,6 +37,19 @@ services:
       - app-network
     volumes:
       - './data/mongodb/data:/bitnami/mongodb/data'
+      - './data/mongodb/logs:/bitnami/mongodb/logs'
+
+  redis:
+    image: 'bitnami/redis:6.2.14'
+    ports:
+      - '6379:6379'
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_pass}
+    networks:
+      - app-network
+    volumes:
+      - './data/redis/data:/bitnami/redis/data'
+      - './data/redis/logs:/bitnami/redis/logs'
 
   app_stock_syncer:
     build:
@@ -51,8 +64,15 @@ services:
     build:
       context: ./sync_mongo
       dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - DB_URI=mongodb://mongo_user:mongo_pass@mongodb:27017/stock
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASS=redis_pass
     networks:
       - app-network
     depends_on:
       - kafka
       - mongodb
+      - redis

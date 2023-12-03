@@ -1,7 +1,7 @@
 {
   "name": "stock_syncer",
   "version": "1.0.0",
-  "description": "Sync data from the Apache Kafka to MongoDB.",
+  "description": "Sync data from the Apache Kafka to MongoDB and Redis.",
   "main": "mongo_publisher.js",
   "scripts": {
     "start": "node mongo_publisher.js",
@@ -13,6 +13,7 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "kafkajs": "^2.2.4",
-    "mongoose": "^8.0.0"
+    "mongoose": "^8.0.0",
+    "redis": "^4.6.11"
   }
 }
