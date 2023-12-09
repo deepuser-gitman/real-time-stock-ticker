@@ -1,0 +1,19 @@
+{
+  "name": "stock_api",
+  "version": "1.0.0",
+  "description": "Serve data from the MongoDB and Redis.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "redis": "^4.6.11",
+    "socket.io": "^4.7.2"
+  }
+}

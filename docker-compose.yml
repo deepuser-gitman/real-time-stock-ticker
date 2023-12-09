@@ -57,6 +57,7 @@ services:
       dockerfile: Dockerfile
     networks:
       - app-network
+    restart: always
     depends_on:
       - kafka
 
@@ -72,7 +73,25 @@ services:
       - REDIS_PASS=redis_pass
     networks:
       - app-network
+    restart: always
     depends_on:
       - kafka
       - mongodb
+      - redis
+
+  stock_api:
+    build:
+      context: ./stock_api
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASS=redis_pass
+    networks:
+      - app-network
+    restart: always
+    depends_on:
       - redis

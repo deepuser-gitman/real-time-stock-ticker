@@ -42,9 +42,9 @@ const kafka = new Kafka({
 const consumer = kafka.consumer({
     groupId: 'stock-group', retry: {
         retries: 10,
-        factor: 2,
+        factor: 3,
         initialRetryTime: 5000,
-        maxRetryTime: 15000
+        maxRetryTime: 25000
     }
 })
 

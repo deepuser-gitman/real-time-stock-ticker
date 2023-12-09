@@ -13,9 +13,9 @@ const producer = kafka.producer({
     allowAutoTopicCreation: true,
     retry: {
         retries: 10,
-        factor: 2,
+        factor: 3,
         initialRetryTime: 5000,
-        maxRetryTime: 15000
+        maxRetryTime: 25000
     }
 });
 
@@ -25,9 +25,10 @@ const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.FINNHUB_AP
 
 // Connection opened -> Subscribe
 socket.addEventListener('open', function (event) {
-    // socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'AAPL' }))
+    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'AAPL' }))
+    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'EXCOF' }))
     socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'BINANCE:BTCUSDT' }))
-    // socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'IC MARKETS:1' }))
+    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'IC MARKETS:1' }))
 });
 
 const send_message_to_kafka = async (event) => {
