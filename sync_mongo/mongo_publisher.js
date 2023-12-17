@@ -77,5 +77,6 @@ await consumer.run({
                     console.log(err);
                 });
         });
+        await new Promise(resolve => setTimeout(resolve, 5000));
     },
 });

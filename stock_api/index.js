@@ -45,13 +45,13 @@ const io = new SocketServer(server, {
 
 let connectedClients = {}; // Map to store connected clients and their associated stock symbols
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
     console.log(`Client connected: ${socket.id}`);
 
-    socket.on('message', (socket_message) => {
+    socket.on('message', async (socket_message) => {
         console.log(`Message from client ${socket.id}: ${socket_message}`)
 
-        socket.join(socket_message);
+        await socket.join(socket_message);
         console.log(`Socket ${socket.id} joined rooms:`, Array.from(socket.rooms).join(', '));
         if (!connectedClients[socket_message]) {
             connectedClients[socket_message] = [socket.id];
@@ -59,11 +59,11 @@ io.on('connection', (socket) => {
         else {
             connectedClients[socket_message].push(socket.id);
         }
-        redisClient.subscribe(socket_message, (message) => {
+        redisClient.subscribe(socket_message, async (message) => {
             console.log(`Message from redis: ${message}`)
 
             io.to(socket_message).fetchSockets().then(sockets => {
-                sockets.forEach(io_socket => {
+                sockets.forEach(async io_socket => {
                     console.log(`A message to Socket ID ${io_socket.id}: ${message}`);
                     io_socket.emit('message', message);
                 });
@@ -74,14 +74,14 @@ io.on('connection', (socket) => {
             console.log(`Error: ${err}`);
         });
     });
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async () => {
         console.log(`Client disconnected: ${socket.id}`);
         for (const [symbol, clients] of Object.entries(connectedClients)) {
             if (clients.includes(socket.id)) {
                 connectedClients[symbol] = connectedClients[symbol].filter(client => client !== socket.id);
                 if (connectedClients[symbol].length === 0) {
                     delete connectedClients[symbol];
-                    redisClient.unsubscribe(symbol);
+                    await redisClient.unsubscribe(symbol);
                     console.log(`Unsubscribed from ${symbol}`);
                 }
             }

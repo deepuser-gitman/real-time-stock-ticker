@@ -25,10 +25,8 @@ const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.FINNHUB_AP
 
 // Connection opened -> Subscribe
 socket.addEventListener('open', function (event) {
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'AAPL' }))
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'EXCOF' }))
+    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'COINBASE:ETH-USD' }))
     socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'BINANCE:BTCUSDT' }))
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': 'IC MARKETS:1' }))
 });
 
 const send_message_to_kafka = async (event) => {
