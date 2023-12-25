@@ -2,11 +2,15 @@ import WebSocket from 'ws';
 import dotenv from 'dotenv';
 import { Kafka } from 'kafkajs';
 
-dotenv.config();
+let brokers = ['kafka:9092'];
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+    brokers = ['localhost:9094'];
+}
 
 const kafka = new Kafka({
     clientId: 'kafka-stock',
-    brokers: ['localhost:9094', 'kafka:9092'],
+    brokers: brokers,
 });
 
 const producer = kafka.producer({

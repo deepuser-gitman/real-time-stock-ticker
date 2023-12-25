@@ -5,7 +5,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN command npm install
 
-COPY .env ./
 COPY stock_*.js ./
 
 ENTRYPOINT [ "npm", "start" ]

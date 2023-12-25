@@ -55,6 +55,9 @@ services:
     build:
       context: ./stock_syncer
       dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - FINNHUB_API_KEY=${FINNHUB_API_KEY}
     networks:
       - app-network
     restart: always
@@ -87,6 +90,7 @@ services:
       - '3000:3000'
     environment:
       - NODE_ENV=production
+      - DB_URI=mongodb://mongo_user:mongo_pass@mongodb:27017/stock
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASS=redis_pass
@@ -95,3 +99,4 @@ services:
     restart: always
     depends_on:
       - redis
+      - mongodb

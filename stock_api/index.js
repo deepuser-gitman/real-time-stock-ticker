@@ -1,14 +1,24 @@
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import { createClient } from 'redis';
 import express from 'express';
 import { Server as SocketServer } from "socket.io";
 import { createServer } from 'http';
+import stockRoutes from './routes/stockRoutes.js';
 
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 
+// connect to mongodb & listen for requests
+const dbURI = process.env.DB_URI;
+mongoose.connect(dbURI)
+
 const app = express();
+
+// stock routes
+app.use('/stocks', stockRoutes);
+
 const server = createServer(app);
 
 const redis_connection_config = {

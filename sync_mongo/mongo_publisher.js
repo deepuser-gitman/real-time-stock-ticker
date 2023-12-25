@@ -4,8 +4,10 @@ import mongoose from 'mongoose';
 import redis from 'redis';
 import Stock from './models/stock.js';
 
+let brokers = ['kafka:9092'];
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
+    brokers = ['localhost:9094'];
 }
 
 // connect to mongodb & listen for requests
@@ -36,7 +38,7 @@ redisClient.on('error', (err) => {
 
 const kafka = new Kafka({
     clientId: 'kafka-stock',
-    brokers: ['localhost:9094', 'kafka:9092'],
+    brokers: brokers,
 });
 
 const consumer = kafka.consumer({
