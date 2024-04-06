@@ -66,7 +66,7 @@ await consumer.run({
                 volume: element['v']
             }
             redisClient.publish(element['s'], JSON.stringify(stock_data)).then(result => {
-                console.log(result);
+                console.log(`Message published to redis: ${JSON.stringify(result)}`);
             }).catch(err => {
                 console.log(err);
             });
@@ -78,7 +78,8 @@ await consumer.run({
                 .catch(err => {
                     console.log(err);
                 });
+            // await new Promise(resolve => setTimeout(resolve, 5000));
         });
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        // await new Promise(resolve => setTimeout(resolve, 5000));
     },
 });

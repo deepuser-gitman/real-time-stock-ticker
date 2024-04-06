@@ -55,7 +55,15 @@ const io = new SocketServer(server, {
 
 let connectedClients = {}; // Map to store connected clients and their associated stock symbols
 
-io.on('connection', async (socket) => {
+io.on('error', (err) => {
+    console.log(err);
+})
+
+io.on('close', () => {
+    console.log('Server closed');
+})
+
+io.on('connection', (socket) => {
     console.log(`Client connected: ${socket.id}`);
 
     socket.on('message', async (socket_message) => {
@@ -99,4 +107,19 @@ io.on('connection', async (socket) => {
     });
 });
 
-server.listen(3000);
+server.on('error', (err) => {
+    console.log(err);
+})
+
+server.on('close', () => {
+    console.log('Server closed');
+})
+
+// server.on('connection', (socket) => {
+//     console.log('Server connected');
+//     // console.log(socket);
+// })
+
+server.listen(3000, () => {
+    console.log('Server started on port 3000');
+});
