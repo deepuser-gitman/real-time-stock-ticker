@@ -7,7 +7,6 @@ import Router from 'src/routes/sections';
 import ThemeProvider from 'src/theme';
 
 import { useReducer, useEffect, useMemo, useState } from 'react';
-// import useWebSocket from 'react-use-websocket';
 
 import { WebSocketContext } from 'src/contexts/webSocketContext';
 import webSocketReducer from './reducers/webSocketReducer';
@@ -48,37 +47,11 @@ export default function App() {
     };
   }, []);
 
-  // const [state, dispatch] = useReducer(webSocketReducer, { watchlist: [], stock_list: stockList });
-
   const contextValue = useMemo(() => state, [state, dispatch]);
-
-  // useEffect(() => {
-  // socket.onopen = () => {
-  //   console.log('WebSocket connected!');
-  //   dispatch({ type: 'ADD_WATCHLIST', payload: 'COINBASE:ETH-USD' });
-  // };
-
-  // socket.onclose = () => {
-  //   console.log('WebSocket closed!');
-  // };
-
-  // socket.onerror = (error) => {
-  //   console.error('WebSocket error:', error);
-  // };
-
-  // socket.onMessage = (data) => {
-  //   dispatch({ type: 'ADD_STOCK', payload: data });
-  // };
-
-  // dispatch({ type: 'ADD_WATCHLIST', payload: 'COINBASE:ETH-USD' });
-  // dispatch({ type: 'ADD_WATCHLIST', payload: 'BINANCE:BTCUSDT' });
-  // }, [socket]);
 
   return (
     <ThemeProvider>
-      {/* <WebSocketContext.Provider value={contextValue}> */}
       <WebSocketContext.Provider value={contextValue}>
-        {/* <WebSocketContext.Provider> */}
         <Router />
       </WebSocketContext.Provider>
     </ThemeProvider>

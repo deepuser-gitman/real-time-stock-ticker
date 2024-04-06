@@ -48,11 +48,6 @@ app.get('/', (req, res) => {
 });
 
 const io = new SocketServer(server, {
-    // allowEIO3: true,
-    // path: '/socket.io',
-    // serveClient: true,
-    // transports: ['websocket'],
-    // cookie: false,
     cors: {
         origin: '*',
     }

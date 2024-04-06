@@ -58,7 +58,6 @@ await consumer.run({
         console.log(`Message from kafka: ${message.value}`)
         const message_json = JSON.parse(message.value.toString())
         const message_data = message_json['data']
-        // while (true) {
         message_data.forEach(async element => {
             const stock_data = {
                 symbol: element['s'],
@@ -71,17 +70,16 @@ await consumer.run({
             }).catch(err => {
                 console.log(err);
             });
-            // const stock = new Stock(stock_data);
-            // await stock.save()
-            //     .then(result => {
-            //         console.log(result);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            const stock = new Stock(stock_data);
+            await stock.save()
+                .then(result => {
+                    console.log(result);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            // await new Promise(resolve => setTimeout(resolve, 5000));
         });
-        // }
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        // await new Promise(resolve => setTimeout(resolve, 5000));
     },
 });
