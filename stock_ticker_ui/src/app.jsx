@@ -29,21 +29,28 @@ export default function App() {
       setIsConnected(false);
     }
 
-    function onFooEvent(value) {
+    function onMessage(value) {
       console.log(value);
       setStockList(previous => [...previous, value]);
       console.log(stockList.length);
       dispatch({ type: 'ADD_STOCK', payload: JSON.parse(value) });
     }
 
+    function onUnsubscribe(value) {
+      setStockList(previous => previous.filter(item => item !== value));
+      dispatch({ type: 'REMOVE_STOCK', payload: value });
+    }
+
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on('message', onFooEvent);
+    socket.on('message', onMessage);
+    socket.on('unsubscribe', onUnsubscribe);
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
-      socket.off('message', onFooEvent);
+      socket.off('message', onMessage);
+      socket.off('unsubscribe', onUnsubscribe);
     };
   }, []);
 

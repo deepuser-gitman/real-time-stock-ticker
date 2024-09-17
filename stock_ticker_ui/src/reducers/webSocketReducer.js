@@ -4,6 +4,7 @@ export default function webSocketReducer(state, action) {
     if (!state) {
         return state
     }
+    let existing_watchlist = state.watchlist;
     switch (action.type) {
         case 'ADD_WATCHLIST':
             console.log(`Adding ${action.payload} to watchlist.`);
@@ -20,13 +21,12 @@ export default function webSocketReducer(state, action) {
             }
         case 'ADD_STOCK':
             console.log(`Adding ${action.payload} to stock_list.`);
-            let existing_watchlist = state.watchlist;
             if (!existing_watchlist.includes(action.payload.symbol)) {
                 existing_watchlist = [...existing_watchlist, action.payload.symbol];
             }
             return {
                 ...state,
-                stock_list: [...(state.stock_list || []), action.payload],
+                stock_list: [...(state.stock_list || []), action.payload].slice(-20),
                 watchlist: existing_watchlist
             }
         case 'REMOVE_STOCK':

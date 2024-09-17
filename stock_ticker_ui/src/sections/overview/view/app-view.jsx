@@ -137,6 +137,20 @@ export default function AppView() {
           />
         </Grid>
 
+        {/* <Grid xs={12} md={6} lg={4}>
+          <AppCurrentVisits
+            title="Current Visits"
+            chart={{
+              series: [
+                { label: 'America', value: 4344 },
+                { label: 'Asia', value: 5435 },
+                { label: 'Europe', value: 1443 },
+                { label: 'Africa', value: 4443 },
+              ],
+            }}
+          />
+        </Grid> */}
+
         <Grid xs={12} md={6} lg={8}>
           <AppConversionRates
             title="Conversion Rates"
